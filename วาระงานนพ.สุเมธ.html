@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วาระงาน นพ.สุเมธ แสงอ่อน</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Sarabun',sans-serif;background:#F8FAFC;padding:1rem}
+:root{--sky:#0EA5E9;--sky-lt:#E0F2FE;--sky-dk:#0369A1;--mint:#10B981;--mint-lt:#D1FAE5;--mint-dk:#065F46;--rose:#F43F5E;--rose-lt:#FFE4E6;--slate:#64748B;--slate-lt:#F1F5F9;--slate-dk:#0F172A;--done:#10B981;--done-lt:#D1FAE5;--done-dk:#065F46;--cancel:#EF4444;--cancel-lt:#FEE2E2;--cancel-dk:#991B1B;--delay:#F59E0B;--delay-lt:#FEF3C7;--delay-dk:#78350F;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes cardSlide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pinDrop{0%{opacity:0;transform:translateY(-10px) scale(.6)}65%{transform:translateY(2px) scale(1.1)}100%{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes riseUp{0%{opacity:0;transform:translateY(8px) scale(.8)}65%{transform:translateY(-2px) scale(1.05)}100%{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes unfold{0%{opacity:0;transform:scaleY(.15);transform-origin:top center}65%{transform:scaleY(1.06)}100%{opacity:1;transform:scaleY(1)}}
+@keyframes dotPop{0%{opacity:0;transform:scale(0)}60%{transform:scale(1.4)}100%{opacity:1;transform:scale(1)}}
+@keyframes todayPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,107,53,.5)}60%{box-shadow:0 0 0 6px rgba(255,107,53,0)}}
+@keyframes todayBadge{0%{transform:scale(0);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes gUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes weekIn{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:translateX(0)}}
+@keyframes evSlide{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.app{max-width:900px;margin:0 auto;padding:.75rem 0 2rem}
+.hdr{background:var(--sky);border-radius:16px;padding:1rem 1.25rem;margin-bottom:1rem}
+.hdr h1{font-size:16px;font-weight:600;color:#fff;line-height:1.3}
+.hdr p{font-size:12px;color:rgba(255,255,255,.85);margin-top:3px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:8px;margin-bottom:1rem}
+.sc{border-radius:14px;padding:.85rem 1rem;display:flex;flex-direction:column;gap:4px;color:#fff}
+.sc .l{font-size:11px;font-weight:500;opacity:.8}.sc .v{font-size:22px;font-weight:600;line-height:1}.sc .s{font-size:10px;opacity:.65}
+.sc-sky{background:var(--sky)}.sc-done{background:var(--done)}.sc-delay{background:#F59E0B}.sc-cancel{background:var(--cancel)}
+.tabs{display:flex;gap:4px;margin-bottom:1rem;background:var(--slate-lt);border-radius:12px;padding:4px}
+.tab{flex:1;padding:7px 4px;font-size:12px;font-weight:500;color:var(--slate);cursor:pointer;border-radius:9px;display:flex;align-items:center;justify-content:center;gap:4px;transition:.2s;border:none;background:transparent;font-family:inherit;white-space:nowrap}
+.tab.active{background:#fff;color:var(--sky-dk);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.tic{width:13px;height:13px;flex-shrink:0}
+.sec{display:none}.sec.active{display:block}
+.wk-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem}
+.wk-nav h2{font-size:15px;font-weight:600;color:var(--slate-dk)}
+.wk-btns{display:flex;gap:5px;align-items:center}
+.ab{width:32px;height:32px;border-radius:10px;border:1.5px solid #E2E8F0;background:#fff;color:var(--slate);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:.2s}
+.ab:hover{background:var(--sky-lt);border-color:var(--sky);color:var(--sky-dk)}
+.btn-tod{font-size:11px;padding:5px 12px;border-radius:10px;border:1.5px solid var(--sky);color:var(--sky-dk);background:var(--sky-lt);cursor:pointer;font-family:inherit;font-weight:600;transition:.2s}
+.btn-tod:hover{background:var(--sky);color:#fff}
+.wk-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.wk-col{border-radius:12px;overflow:hidden;border:1.5px solid #E8F4FF;background:#fff;min-height:110px;transition:.18s}
+.wk-col.today-col{border-color:#FF6B35;box-shadow:0 0 0 2px rgba(255,107,53,.15)}
+.wk-col:hover{border-color:var(--sky)}
+.wk-head{padding:6px 8px 5px;text-align:center;border-bottom:1.5px solid #F1F5F9;background:#FAFBFC}
+.wk-col.today-col .wk-head{background:#FF6B35}
+.wk-dow{font-size:10px;font-weight:600;color:var(--slate)}
+.wk-col.today-col .wk-dow{color:rgba(255,255,255,.8)}
+.wk-day-num{font-size:17px;font-weight:600;color:var(--slate-dk);line-height:1.1;margin-top:1px}
+.wk-col.today-col .wk-day-num{color:#fff}
+.wk-month{font-size:10px;color:var(--slate);margin-top:1px}
+.wk-col.today-col .wk-month{color:rgba(255,255,255,.75)}
+.wk-body{padding:4px}
+.wk-ev{border-radius:7px;padding:3px 5px;margin-bottom:3px;cursor:pointer;transition:.18s;border-left:3px solid transparent}
+.wk-ev:hover{opacity:.82;transform:translateX(1px)}
+.wk-ev .wt{font-size:9px;font-weight:600;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.wk-ev .wtime{font-size:8px;margin-top:1px;opacity:.7}
+.wst{display:inline-block;width:5px;height:5px;border-radius:50%;margin-right:2px;vertical-align:middle}
+.wk-more{font-size:9px;color:var(--sky-dk);background:var(--sky-lt);border-radius:5px;padding:2px 5px;text-align:center;cursor:pointer;font-weight:600}
+.wk-more:hover{background:var(--sky);color:#fff}
+.wk-free{padding:10px 4px;text-align:center}
+.wk-free span{font-size:12px;font-weight:700;color:var(--mint)}
+.day-panel{margin-top:.875rem;background:#fff;border-radius:14px;border:1.5px solid #E8F4FF;padding:.875rem}
+.dp-hdr{display:flex;align-items:center;gap:7px;margin-bottom:.625rem}
+.dp-hdr h3{font-size:13px;font-weight:600;color:var(--slate-dk)}
+.dp-hdr span{background:var(--sky-lt);color:var(--sky-dk);border-radius:999px;padding:1px 7px;font-size:10px}
+.dp-hdr .tt{background:#FF6B35;color:#fff}
+.dp-hdr .free-tag{background:var(--mint-lt);color:var(--mint-dk);font-weight:700}
+.close-btn{margin-left:auto;width:22px;height:22px;border-radius:6px;border:none;background:var(--slate-lt);color:var(--slate);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px}
+.close-btn:hover{background:#E2E8F0}
+.cal-box{background:#fff;border-radius:14px;border:1.5px solid #E8F4FF;padding:1rem;margin-bottom:1rem}
+.cal-nav-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem}
+.cal-nav-row h2{font-size:15px;font-weight:600;color:var(--slate-dk)}
+.cal-arrows{display:flex;gap:5px}
+.cleg{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:.5rem}
+.li{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--slate)}
+.ld{width:11px;height:11px;border-radius:3px}
+.tdisp{font-size:11px;font-weight:600;color:#FF6B35;margin-left:auto}
+.cgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.dow{font-size:10px;font-weight:600;color:var(--slate);text-align:center;padding:4px 0}
+.cd{min-height:54px;border-radius:10px;padding:5px;cursor:pointer;transition:.18s;border:1.5px solid transparent;background:#FAFBFC;position:relative;display:flex;flex-direction:column}
+.cd:hover{background:var(--sky-lt);border-color:var(--sky)}
+.cd.oth .dn{color:#CBD5E1}.cd.oth .free-lbl{display:none}
+.cd.sel:not(.td){background:var(--sky);border-color:var(--sky)}
+.cd.sel:not(.td) .dn{color:#fff;font-weight:700}
+.cd.sel:not(.td) .dot{background:rgba(255,255,255,.75)!important}
+.cd.sel:not(.td) .free-lbl{color:rgba(255,255,255,.9)!important}
+.cd.td{background:#FF6B35;border:2px solid #E8521A;border-radius:12px;animation:todayPulse 2.2s ease-out .4s 3}
+.cd.td .dn{color:#fff;font-weight:700;font-size:13px}
+.cd.td .dot{background:rgba(255,255,255,.85)!important}
+.cd.td::after{content:'วันนี้';position:absolute;bottom:3px;right:4px;font-size:9px;font-weight:600;color:rgba(255,255,255,.9);font-family:'Sarabun',sans-serif;animation:todayBadge .4s ease .5s both}
+.cd.td.sel{background:#E8521A;border-color:#C43E10}
+.cd.td .free-lbl{color:rgba(255,255,255,.9)!important}
+.dn{font-size:12px;font-weight:600;color:var(--slate-dk)}
+.dots{display:flex;gap:2px;flex-wrap:wrap;margin-top:3px}
+.dot{width:6px;height:6px;border-radius:50%}
+.free-lbl{font-size:10px;font-weight:700;color:var(--mint);margin-top:auto;padding-top:3px;line-height:1;display:block}
+.ev-section{background:#fff;border-radius:14px;border:1.5px solid #E8F4FF;padding:1rem}
+.ev-sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:.875rem;flex-wrap:wrap;gap:8px}
+.ev-sec-hdr h2{font-size:15px;font-weight:600;color:var(--slate-dk)}
+.hdr-right{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.sel-tag{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:var(--sky-dk);background:var(--sky-lt);border-radius:999px;padding:3px 12px}
+.sel-tag.tt{color:#C2410C;background:#FFEDD5}
+.btn-showall{font-size:12px;padding:5px 14px;border-radius:999px;border:1.5px solid var(--sky);color:var(--sky-dk);background:#fff;cursor:pointer;font-family:inherit;font-weight:600;transition:.2s}
+.btn-showall:hover,.btn-showall.active-all{background:var(--sky);color:#fff}
+.ae-bar{display:flex;gap:8px;margin-bottom:.875rem;flex-wrap:wrap;align-items:center}
+.ae-search-wrap{position:relative;flex:1;min-width:180px;display:flex;align-items:center}
+.ae-search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--slate);pointer-events:none;z-index:1}
+.ae-search-inp{width:100%;font-size:13px;padding:8px 12px 8px 34px;border-radius:10px;border:1.5px solid #E2E8F0;background:#FAFBFC;color:var(--slate-dk);font-family:inherit;outline:none;transition:.18s;line-height:1.4}
+.ae-search-inp:focus{border-color:var(--sky);background:#fff;box-shadow:0 0 0 3px rgba(14,165,233,.12)}
+.ae-unit-sel,.ae-sort-sel{font-size:12px;padding:8px 10px;border-radius:10px;border:1.5px solid #E2E8F0;background:#FAFBFC;color:var(--slate-dk);font-family:inherit;outline:none;cursor:pointer;max-width:220px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.75rem}
+.chip{font-size:11px;padding:5px 12px;border-radius:999px;border:1.5px solid #E2E8F0;background:#fff;color:var(--slate);cursor:pointer;transition:.18s;font-weight:500;font-family:inherit}
+.chip.active{background:var(--sky);color:#fff;border-color:var(--sky)}
+.chip:hover:not(.active){background:var(--sky-lt);border-color:var(--sky);color:var(--sky-dk)}
+.cdone{border-color:var(--done)!important;color:var(--done-dk)!important}.cdone.active{background:var(--done)!important;border-color:var(--done)!important;color:#fff!important}
+.cdelay{border-color:#F59E0B!important;color:var(--delay-dk)!important}.cdelay.active{background:#F59E0B!important;border-color:#F59E0B!important;color:#fff!important}
+.ccanc{border-color:var(--cancel)!important;color:var(--cancel-dk)!important}.ccanc.active{background:var(--cancel)!important;border-color:var(--cancel)!important;color:#fff!important}
+.aesum{font-size:12px;color:var(--slate);margin-bottom:.75rem;display:flex;align-items:center;gap:6px}
+.aecnt{background:var(--sky-lt);color:var(--sky-dk);border-radius:999px;padding:2px 10px;font-weight:600;font-size:12px}
+.tb{margin-bottom:1.25rem}
+.th{display:flex;align-items:center;gap:10px;margin-bottom:.5rem}
+.tdot2{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.tl2{font-size:12px;font-weight:600;color:var(--slate-dk)}
+.tline{flex:1;height:1.5px;background:linear-gradient(to right,var(--sky-lt),transparent)}
+.tcnt{font-size:11px;color:var(--sky-dk);background:var(--sky-lt);border-radius:999px;padding:1px 8px}
+.tcards{padding-left:11px;border-left:2px solid var(--sky-lt)}
+.stbdg{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:3px 8px;border-radius:999px;margin-top:4px}
+.sp{background:var(--sky-lt);color:var(--sky-dk)}.sd2{background:var(--done-lt);color:var(--done-dk)}.sl2{background:#FEF3C7;color:var(--delay-dk)}.sc2{background:var(--cancel-lt);color:var(--cancel-dk)}
+.sdot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.evc{display:flex;border-radius:14px;overflow:hidden;margin-bottom:10px;border:1.5px solid #E8F4FF;background:#fff;transition:.18s}
+.evc:hover{border-color:var(--sky);transform:translateY(-1px);box-shadow:0 4px 16px rgba(14,165,233,.1)}
+.evc.st-done{opacity:.72;border-color:#D1FAE5}.evc.st-cancel{opacity:.55;border-color:#FEE2E2}.evc.st-delay{border-color:#FEF3C7}
+.ea{width:5px;flex-shrink:0}.eb{padding:.7rem .875rem;flex:1;min-width:0}
+.et{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:5px}
+.etit{font-size:13px;font-weight:600;color:var(--slate-dk);line-height:1.4;flex:1;min-width:0}
+.er{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+.ebdg{font-size:10px;padding:2px 8px;border-radius:999px;font-weight:600;white-space:nowrap}
+.etm{font-size:11px;color:var(--slate);display:flex;align-items:center;gap:3px;white-space:nowrap}
+.mrows{display:flex;flex-direction:column;gap:5px;margin-top:4px}
+.mrow{display:flex;align-items:flex-start;gap:7px;font-size:12px;color:var(--slate);line-height:1.4}
+.mic{width:24px;height:24px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mic svg{width:13px;height:13px;display:block}
+.acts{display:flex;gap:5px;margin-top:.5rem;padding-top:.5rem;border-top:1px solid #F1F5F9;flex-wrap:wrap;align-items:center}
+.b{font-size:11px;padding:4px 9px;border-radius:8px;border:1px solid #E2E8F0;background:#fff;cursor:pointer;color:var(--slate);transition:.15s;font-family:inherit;display:inline-flex;align-items:center;gap:3px}
+.b:hover:not(:disabled){background:var(--sky-lt);color:var(--sky-dk);border-color:var(--sky)}
+.bdone{border-color:var(--done);color:var(--done-dk)}.bdone:hover:not(:disabled){background:var(--done-lt)!important;color:var(--done-dk)!important;border-color:var(--done)!important}
+.bdone.act{background:var(--done);color:#fff;border-color:var(--done)}
+.bdone:disabled{opacity:.28;cursor:not-allowed;border-color:#E2E8F0!important;color:var(--slate)!important;background:#fff!important}
+.bdelay{border-color:#F59E0B;color:var(--delay-dk)}.bdelay:hover:not(:disabled){background:#FEF3C7!important;border-color:#F59E0B!important}
+.bdelay.act{background:#F59E0B;color:#fff;border-color:#F59E0B}
+.bcanc{border-color:var(--cancel);color:var(--cancel-dk)}.bcanc:hover:not(:disabled){background:var(--cancel-lt)!important;border-color:var(--cancel)!important}
+.bcanc.act{background:var(--cancel);color:#fff;border-color:var(--cancel)}
+.bdel{border-color:#FFD7D7;color:var(--rose)}.bdel:hover{background:var(--rose-lt);border-color:var(--rose)}
+.fhint{font-size:10px;color:var(--slate);opacity:.5;font-style:italic}
+.fc{background:#fff;border-radius:16px;border:1.5px solid #E8F4FF;padding:1.5rem;max-width:560px}
+.fc h2{font-size:15px;font-weight:600;color:var(--slate-dk);margin-bottom:1.25rem}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fld{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.fld label{font-size:11px;font-weight:600;color:var(--slate)}
+.fld input,.fld textarea,.fld select{width:100%;font-size:13px;border-radius:10px;border:1.5px solid #E2E8F0;padding:9px 12px;background:#FAFBFC;color:var(--slate-dk);font-family:inherit;outline:none;transition:.18s;line-height:1.4}
+.fld input:focus,.fld textarea:focus,.fld select:focus{border-color:var(--sky);background:#fff;box-shadow:0 0 0 3px rgba(14,165,233,.12)}
+.fld textarea{min-height:80px;resize:vertical}
+.urow{display:flex;gap:8px;align-items:flex-start}.urow select{flex:1}
+.auw{display:none;margin-top:8px;gap:6px;align-items:center}.auw.show{display:flex}
+.aui{flex:1;font-size:12px;border-radius:8px;border:1.5px solid #E2E8F0;padding:7px 10px;background:#FAFBFC;color:var(--slate-dk);font-family:inherit;outline:none}
+.aui:focus{border-color:var(--mint)}
+.bau{font-size:11px;padding:7px 12px;border-radius:8px;border:none;background:var(--mint);color:#fff;cursor:pointer;font-family:inherit;font-weight:600;white-space:nowrap}
+.btu{font-size:11px;padding:7px 10px;border-radius:8px;border:1.5px solid var(--mint);color:var(--mint);background:#fff;cursor:pointer;font-family:inherit;white-space:nowrap;flex-shrink:0}
+.btu:hover{background:var(--mint-lt,#D1FAE5)}
+.ff{display:flex;gap:8px;margin-top:.5rem}
+.bcnc{font-size:13px;padding:8px 18px;border-radius:10px;border:1.5px solid #E2E8F0;background:#fff;color:var(--slate);cursor:pointer;font-family:inherit;font-weight:500}
+.bcnc:hover{background:var(--slate-lt)}
+.bsv{font-size:13px;padding:8px 18px;border-radius:10px;border:none;background:var(--sky);color:#fff;cursor:pointer;font-family:inherit;font-weight:600;display:inline-flex;align-items:center;gap:5px}
+.bsv:hover{background:var(--sky-dk)}
+.emp{text-align:center;padding:2rem 1rem;color:var(--slate)}
+.emp svg{width:36px;height:36px;margin:0 auto 8px;display:block;opacity:.25;animation:floatY 2.5s ease-in-out infinite}
+.emp p{font-size:12px;opacity:.55}
+.mwrap{display:none;position:fixed;inset:0;z-index:100}.mwrap.open{display:block}
+.mov{background:rgba(15,23,42,.5);padding:2rem 1rem;min-height:100vh;display:flex;align-items:flex-start;justify-content:center}
+.mbox{background:#fff;border-radius:16px;border:1.5px solid #E8F4FF;padding:1.5rem;width:min(560px,100%);margin-top:2rem}
+.mbox h2{font-size:15px;font-weight:600;color:var(--slate-dk);margin-bottom:1.25rem}
+.mft{display:flex;justify-content:flex-end;gap:8px;margin-top:1rem}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="hdr"><h1>วาระงาน นพ.สุเมธ แสงอ่อน</h1><p>รองนายแพทย์สาธารณสุขจังหวัดอำนาจเจริญ</p></div>
+<div class="stats" id="stats"></div>
+<div class="tabs">
+  <button class="tab" onclick="sw('week',this)"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="3" y1="15" x2="21" y2="15"/></svg>สัปดาห์</button>
+  <button class="tab active" onclick="sw('calall',this)"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>ปฏิทิน & วาระ</button>
+  <button class="tab" onclick="sw('add',this)"><svg class="tic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>เพิ่มวาระ</button>
+</div>
+<div class="sec" id="sec-week">
+  <div class="wk-nav"><h2 id="wk-lbl"></h2><div class="wk-btns"><button class="ab" onclick="wkPrev()">&#8249;</button><button class="btn-tod" onclick="wkGoToday()">วันนี้</button><button class="ab" onclick="wkNext()">&#8250;</button></div></div>
+  <div class="wk-grid" id="wk-grid"></div>
+  <div id="wk-panel"></div>
+</div>
+<div class="sec active" id="sec-calall">
+  <div class="cal-box">
+    <div class="cal-nav-row"><h2 id="clbl"></h2><div class="cal-arrows"><button class="ab" onclick="pm()">&#8249;</button><button class="ab" onclick="nm()">&#8250;</button></div></div>
+    <div class="cleg">
+      <div class="li"><div class="ld" style="background:#FF6B35"></div>วันนี้</div>
+      <div class="li"><div class="ld" style="background:var(--sky)"></div>วันที่เลือก</div>
+      <div class="li"><div class="ld" style="background:var(--done)"></div>เสร็จ</div>
+      <div class="li"><div class="ld" style="background:#F59E0B"></div>เลื่อน</div>
+      <div class="li"><div class="ld" style="background:var(--cancel)"></div>ยกเลิก</div>
+      <div class="li"><span style="font-size:11px;font-weight:700;color:var(--mint)">ว่าง</span></div>
+      <span class="tdisp" id="tdisp"></span>
+    </div>
+    <div class="cgrid" id="cgrid"></div>
+  </div>
+  <div class="ev-section">
+    <div class="ev-sec-hdr"><h2 id="ev-title">วาระทั้งหมด</h2><div class="hdr-right"><div id="sel-tag-wrap"></div><button class="btn-showall active-all" id="btn-all" onclick="showAll()">แสดงทั้งหมด</button></div></div>
+    <div class="ae-bar">
+      <div class="ae-search-wrap"><svg class="ae-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input class="ae-search-inp" type="text" id="aeq" placeholder="ค้นหาวาระ สถานที่ ประธาน..." oninput="rEvs()"></div>
+      <select class="ae-unit-sel" id="ae-unit" onchange="rEvs()"><option value="">— กลุ่มงานทั้งหมด —</option></select>
+      <select class="ae-sort-sel" id="aesrt" onchange="rEvs()"><option value="unit">เรียงตามกลุ่มงาน</option><option value="status">เรียงตามสถานะ</option></select>
+    </div>
+    <div class="chips" id="stchips">
+      <button class="chip active" onclick="setSF(this,'all')">ทุกสถานะ</button>
+      <button class="chip cdone" onclick="setSF(this,'done')">เสร็จแล้ว</button>
+      <button class="chip cdelay" onclick="setSF(this,'delay')">เลื่อน</button>
+      <button class="chip ccanc" onclick="setSF(this,'cancel')">ยกเลิก</button>
+    </div>
+    <div class="aesum" id="aesum"></div>
+    <div id="aebody"></div>
+  </div>
+</div>
+<div class="sec" id="sec-add">
+  <div class="fc">
+    <h2 id="fttl">เพิ่มวาระงานใหม่</h2>
+    <div class="fg"><div class="fld"><label>วันที่</label><input type="date" id="fDate"></div><div class="fld"><label>เวลา</label><input type="text" id="fTime" placeholder="09.00 – 12.00 น."></div></div>
+    <div class="fld"><label>รายละเอียดวาระ</label><textarea id="fDetail" placeholder="ชื่อการประชุม / กิจกรรม..."></textarea></div>
+    <div class="fld"><label>สถานที่</label><input type="text" id="fPlace" placeholder="ระบุสถานที่..."></div>
+    <div class="fld"><label>ประธาน / ผู้รับผิดชอบ</label><input type="text" id="fChair" placeholder="ระบุชื่อประธาน..."></div>
+    <div class="fld"><label>การแต่งกาย</label><input type="text" id="fDress" placeholder="ระบุการแต่งกาย..."></div>
+    <div class="fld"><label>กลุ่มงาน</label><div class="urow"><select id="fUnit"></select><button class="btu" onclick="tgu('f')">+ กลุ่มใหม่</button></div><div class="auw" id="f-uw"><input class="aui" type="text" id="f-ui" placeholder="ชื่อกลุ่มงานใหม่..."><button class="bau" onclick="addU('f')">เพิ่ม</button></div></div>
+    <input type="hidden" id="fId">
+    <div class="ff"><button class="bcnc" onclick="cf()">ยกเลิก</button><button class="bsv" onclick="saveI()"><svg style="width:13px;height:13px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>บันทึกวาระ</button></div>
+  </div>
+</div>
+</div>
+<div class="mwrap" id="medit"><div class="mov"><div class="mbox">
+  <h2>แก้ไขวาระงาน</h2>
+  <div class="fg"><div class="fld"><label>วันที่</label><input type="date" id="efDate"></div><div class="fld"><label>เวลา</label><input type="text" id="efTime"></div></div>
+  <div class="fld"><label>รายละเอียด</label><textarea id="efDetail"></textarea></div>
+  <div class="fld"><label>สถานที่</label><input type="text" id="efPlace"></div>
+  <div class="fld"><label>ประธาน</label><input type="text" id="efChair"></div>
+  <div class="fld"><label>การแต่งกาย</label><input type="text" id="efDress"></div>
+  <div class="fld"><label>กลุ่มงาน</label><div class="urow"><select id="efUnit"></select><button class="btu" onclick="tgu('ef')">+ กลุ่มใหม่</button></div><div class="auw" id="ef-uw"><input class="aui" type="text" id="ef-ui" placeholder="ชื่อกลุ่มงานใหม่..."><button class="bau" onclick="addU('ef')">เพิ่ม</button></div></div>
+  <input type="hidden" id="efId">
+  <div class="mft"><button class="bcnc" onclick="ce()">ยกเลิก</button><button class="bsv" onclick="saveE()"><svg style="width:13px;height:13px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>บันทึก</button></div>
+</div></div></div>
+<script>
+const DU=['กลุ่มงานโรคไม่ติดต่อ (กง.NCD)','กลุ่มงานประกันสุขภาพ','กลุ่มงานพัฒนาคุณภาพและรูปแบบบริการ','กลุ่มงานบริการปฐมภูมิและสุขภาพภาคประชาชน','กลุ่มงานบริหารทรัพยากรบุคคล','กลุ่มงานยุทธศาสตร์และสารสนเทศสุขภาพ','กลุ่มงานบริหารทั่วไป','กลุ่มงานควบคุมโรค','อื่น ๆ'];
+let CU=[];
+const BUC={'กลุ่มงานโรคไม่ติดต่อ (กง.NCD)':{bg:'#D1FAE5',tx:'#065F46',ac:'#10B981',dot:'#10B981'},'กลุ่มงานประกันสุขภาพ':{bg:'#E0F2FE',tx:'#0369A1',ac:'#0EA5E9',dot:'#0EA5E9'},'กลุ่มงานพัฒนาคุณภาพและรูปแบบบริการ':{bg:'#FEF3C7',tx:'#78350F',ac:'#F59E0B',dot:'#F59E0B'},'กลุ่มงานบริการปฐมภูมิและสุขภาพภาคประชาชน':{bg:'#EDE9FE',tx:'#4C1D95',ac:'#8B5CF6',dot:'#8B5CF6'},'กลุ่มงานบริหารทรัพยากรบุคคล':{bg:'#FFEDD5',tx:'#7C2D12',ac:'#F97316',dot:'#F97316'},'กลุ่มงานยุทธศาสตร์และสารสนเทศสุขภาพ':{bg:'#CCFBF1',tx:'#134E4A',ac:'#14B8A6',dot:'#14B8A6'},'กลุ่มงานบริหารทั่วไป':{bg:'#DBEAFE',tx:'#1E3A8A',ac:'#3B82F6',dot:'#3B82F6'},'กลุ่มงานควบคุมโรค':{bg:'#FCE7F3',tx:'#831843',ac:'#EC4899',dot:'#EC4899'},'อื่น ๆ':{bg:'#F1F5F9',tx:'#0F172A',ac:'#64748B',dot:'#94A3B8'}};
+const EP=[{bg:'#FEF9C3',tx:'#713F12',ac:'#EAB308',dot:'#EAB308'},{bg:'#DCFCE7',tx:'#14532D',ac:'#22C55E',dot:'#22C55E'}];
+function gUC(u){if(BUC[u])return BUC[u];const i=CU.indexOf(u);return EP[i%EP.length]||EP[0];}
+function allU(){return[...DU,...CU];}
+function bSel(id,v){document.getElementById(id).innerHTML=allU().map(u=>`<option value="${u}"${u===v?' selected':''}>${u}</option>`).join('');}
+function tgu(p){const w=document.getElementById(p+'-uw');w.classList.toggle('show');if(w.classList.contains('show'))document.getElementById(p+'-ui').focus();}
+function addU(p){const i=document.getElementById(p+'-ui');const n=i.value.trim();if(!n)return;if(!CU.includes(n)&&!DU.includes(n))CU.push(n);bSel(p+'Unit',n);i.value='';document.getElementById(p+'-uw').classList.remove('show');rebuildUnitSel();}
+function rebuildUnitSel(){const sel=document.getElementById('ae-unit');const cur=sel.value;const units=[...new Set(DATA.map(d=>d.unit))].sort();sel.innerHTML=`<option value="">— กลุ่มงานทั้งหมด —</option>`+units.map(u=>`<option value="${u}"${u===cur?' selected':''}>${u}</option>`).join('');}
+const TM=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+const TMS=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+const TDF=['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
+const TDS=['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'];
+function gTH(){const n=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Bangkok'}));return`${n.getFullYear()+543}-${String(n.getMonth()+1).padStart(2,'0')}-${String(n.getDate()).padStart(2,'0')}`;}
+const TOD=gTH();
+function effStatus(e){if(e.status==='delay'||e.status==='cancel')return e.status;if(e.date<TOD||e.status==='done')return'done';return'pending';}
+function thD(d){const[y,m,dy]=d.split('-');const j=new Date(+y-543,+m-1,+dy);return`วัน${TDF[j.getDay()]}ที่ ${+dy} ${TMS[+m-1]} ${y}`}
+function thSh(d){const[y,m,dy]=d.split('-');const j=new Date(+y-543,+m-1,+dy);return`${TDF[j.getDay()].slice(0,2)} ${+dy} ${TMS[+m-1]} ${y}`}
+function canDone(ds){return ds<=TOD;}
+function dsStr(j){return`${j.getFullYear()+543}-${String(j.getMonth()+1).padStart(2,'0')}-${String(j.getDate()).padStart(2,'0')}`;}
+function jsD(s){const[y,m,d]=s.split('-');return new Date(+y-543,+m-1,+d);}
+function getWkStart(s){const j=jsD(s);j.setDate(j.getDate()-j.getDay());return dsStr(j);}
+function wkDates(s){const r=[];const j=jsD(s);for(let i=0;i<7;i++){const d=new Date(j);d.setDate(j.getDate()+i);r.push(dsStr(d));}return r;}
+let wkBase=null,wkSel=null,SEL=null,CY=2569,CM=4,NID=40,SF='all';
+function rWeek(){if(!wkBase)wkBase=getWkStart(TOD);const dates=wkDates(wkBase);const[,m1]=dates[0].split('-');const[y2,m2]=dates[6].split('-');document.getElementById('wk-lbl').textContent=m1===m2?`${TM[+m1-1]} พ.ศ. ${y2}`:`${TMS[+m1-1]}–${TMS[+m2-1]} พ.ศ. ${y2}`;document.getElementById('wk-grid').innerHTML=dates.map(d=>{const evs=DATA.filter(e=>e.date===d).sort((a,b)=>a.time.localeCompare(b.time));const isTd=d===TOD;const[,m,dy]=d.split('-');const shown=evs.slice(0,3);const extra=evs.length-3;return`<div class="wk-col${isTd?' today-col':''}"><div class="wk-head"><div class="wk-dow">${TDS[jsD(d).getDay()]}</div><div class="wk-day-num">${+dy}</div><div class="wk-month">${TMS[+m-1]}</div></div><div class="wk-body">${shown.map((e,ei)=>{const c=gUC(e.unit);const s=effStatus(e);const sc=s==='done'?'#10B981':s==='cancel'?'#EF4444':s==='delay'?'#F59E0B':c.ac;return`<div class="wk-ev" style="background:${c.bg};border-left-color:${sc}" onclick="wkS('${d}')"><div class="wt" style="color:${c.tx}"><span class="wst" style="background:${sc}"></span>${e.detail}</div><div class="wtime" style="color:${c.tx}">${e.time}</div></div>`;}).join('')}${extra>0?`<div class="wk-more" onclick="wkS('${d}')">+${extra}</div>`:''}${evs.length===0?`<div class="wk-free"><span>ว่าง</span></div>`:''}</div></div>`;}).join('');if(wkSel)rWkPanel(wkSel);else document.getElementById('wk-panel').innerHTML='';}
+function wkS(d){wkSel=wkSel===d?null:d;rWkPanel(wkSel);}
+function rWkPanel(d){const el=document.getElementById('wk-panel');if(!d){el.innerHTML='';return;}const evs=DATA.filter(e=>e.date===d).sort((a,b)=>a.time.localeCompare(b.time));const isTd=d===TOD;const tag=isTd?`<span class="tt">วันนี้</span>`:evs.length?`<span>${evs.length} วาระ</span>`:`<span class="free-tag">ว่าง</span>`;el.innerHTML=`<div class="day-panel"><div class="dp-hdr"><h3>${thD(d)}</h3>${tag}<button class="close-btn" onclick="wkSel=null;document.getElementById('wk-panel').innerHTML=''">✕</button></div>${evs.length?evs.map((e,i)=>card(e,i,false)).join(''):emp('ไม่มีวาระในวันนี้')}</div>`;}
+function wkPrev(){const j=jsD(wkBase);j.setDate(j.getDate()-7);wkBase=dsStr(j);wkSel=null;rWeek();}
+function wkNext(){const j=jsD(wkBase);j.setDate(j.getDate()+7);wkBase=dsStr(j);wkSel=null;rWeek();}
+function wkGoToday(){wkBase=getWkStart(TOD);wkSel=TOD;rWeek();}
+function rCal(){document.getElementById('clbl').textContent=`${TM[CM-1]} พ.ศ. ${CY}`;document.getElementById('tdisp').textContent=`วันนี้: ${thD(TOD)}`;const grid=document.getElementById('cgrid');const dows=['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'];let h=dows.map(d=>`<div class="dow">${d}</div>`).join('');const jY=CY-543,fd=new Date(jY,CM-1,1).getDay(),dim=new Date(jY,CM,0).getDate(),pd=new Date(jY,CM-1,0).getDate();const tc=Math.ceil((fd+dim)/7)*7;for(let i=0;i<tc;i++){let d,m=CM,y=CY,ot=false;if(i<fd){d=pd-(fd-1-i);m=CM-1<1?12:CM-1;y=m===12?CY-1:CY;ot=true;}else if(i>=fd+dim){d=i-fd-dim+1;m=CM+1>12?1:CM+1;y=m===1?CY+1:CY;ot=true;}else d=i-fd+1;const ds=`${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;const evs=DATA.filter(x=>x.date===ds);const isTd=ds===TOD,isSel=ds===SEL;const isFree=!ot&&evs.length===0;const dots=evs.slice(0,4).map((e,di)=>{const s=effStatus(e);const sc={done:'#10B981',delay:'#F59E0B',cancel:'#EF4444',pending:gUC(e.unit).dot};return`<div class="dot" style="background:${isTd?'rgba(255,255,255,.85)':sc[s]}"></div>`;}).join('');h+=`<div class="${['cd',ot?'oth':'',isTd?'td':'',isSel?'sel':''].filter(Boolean).join(' ')}" onclick="sDate('${ds}')"><div class="dn">${d}</div>${evs.length?`<div class="dots">${dots}</div>`:''}${isFree?`<span class="free-lbl">ว่าง</span>`:''}</div>`;}grid.innerHTML=h;}
+function sDate(d){SEL=d;const[y,m]=d.split('-');if(+y!==CY||+m!==CM){CY=+y;CM=+m;}rCal();document.getElementById('btn-all').classList.remove('active-all');rEvs();}
+function showAll(){SEL=null;document.getElementById('btn-all').classList.add('active-all');rCal();rEvs();}
+function pm(){CM--;if(CM<1){CM=12;CY--;}rCal();}
+function nm(){CM++;if(CM>12){CM=1;CY++;}rCal();}
+function setSF(el,s){SF=s;document.querySelectorAll('#stchips .chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');rEvs();}
+function pM(ac){return`<div class="mic" style="background:${ac}18"><svg viewBox="0 0 24 24" fill="none" stroke="${ac}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3" fill="${ac}" fill-opacity=".25"/></svg></div>`}
+function pP(ac){return`<div class="mic" style="background:${ac}18"><svg viewBox="0 0 24 24" fill="none" stroke="${ac}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4" fill="${ac}" fill-opacity=".2"/><path d="M5.5 21c0-3.6 2.9-6.5 6.5-6.5s6.5 2.9 6.5 6.5"/></svg></div>`}
+function pS(ac){return`<div class="mic" style="background:${ac}18"><svg viewBox="0 0 24 24" fill="none" stroke="${ac}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z" fill="${ac}" fill-opacity=".15"/></svg></div>`}
+function setSt(id,s){const i=DATA.findIndex(d=>d.id===id);if(i<0)return;DATA[i].status=DATA[i].status===s?'pending':s;render();if(wkSel)rWkPanel(wkSel);}
+function stBadge(s){const cfg={pending:{cls:'sp',dot:'#0EA5E9',lbl:'กำลังดำเนินการ'},done:{cls:'sd2',dot:'#10B981',lbl:'เสร็จแล้ว'},delay:{cls:'sl2',dot:'#F59E0B',lbl:'เลื่อน'},cancel:{cls:'sc2',dot:'#EF4444',lbl:'ยกเลิก'}};const t=cfg[s]||cfg.pending;return`<span class="stbdg ${t.cls}"><span class="sdot" style="background:${t.dot}"></span>${t.lbl}</span>`;}
+function card(e,i,compact){const c=gUC(e.unit);const s=effStatus(e);const ac=s==='done'?'#10B981':s==='cancel'?'#EF4444':s==='delay'?'#F59E0B':c.ac;const shortUnit=e.unit.replace('กลุ่มงาน','กง.').replace(' (กง.NCD)','');const ok=canDone(e.date);const doneBtn=ok?`<button class="b bdone${s==='done'?' act':''}" onclick="setSt(${e.id},'done')"><svg style="width:11px;height:11px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>เสร็จ</button>`:`<button class="b bdone" disabled><svg style="width:11px;height:11px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>เสร็จ</button>`;return`<div class="evc st-${s}"><div class="ea" style="background:${ac}"></div><div class="eb"><div class="et"><div class="etit">${compact?`<span style="font-size:11px;color:${c.ac};font-weight:500;display:block;margin-bottom:2px">${thSh(e.date)}</span>`:''}${e.detail}</div><div class="er"><span class="ebdg" style="background:${c.bg};color:${c.tx}">${shortUnit}</span><span class="etm"><svg style="width:11px;height:11px;flex-shrink:0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${e.time}</span></div></div>${stBadge(s)}<div class="mrows">${e.place?`<div class="mrow">${pM(c.ac)}<span>${e.place}</span></div>`:''}${e.chair?`<div class="mrow">${pP(c.ac)}<span>ประธาน: ${e.chair}</span></div>`:''}${e.dress?`<div class="mrow">${pS(c.ac)}<span>การแต่งกาย: ${e.dress}</span></div>`:''}</div><div class="acts">${doneBtn}<button class="b bdelay${s==='delay'?' act':''}" onclick="setSt(${e.id},'delay')"><svg style="width:11px;height:11px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>เลื่อน</button><button class="b bcanc${s==='cancel'?' act':''}" onclick="setSt(${e.id},'cancel')"><svg style="width:11px;height:11px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>ยกเลิก</button>${!ok?`<span class="fhint">ยังไม่ถึงวันนัด</span>`:''}<button class="b" onclick="oe(${e.id})" style="margin-left:auto"><svg style="width:11px;height:11px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>แก้ไข</button><button class="b bdel" onclick="di(${e.id})"><svg style="width:11px;height:11px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>ลบ</button></div></div></div>`;}
+
+let DATA=[
+  {id:1,date:'2569-03-23',time:'09.00–09.30 น.',detail:'ประธานเปิดการประชุมชี้แจงแนวทางการเบิกจ่ายงบทุนสิทธิประกันสังคมของหน่วยบริการสาธารณสุข',place:'ห้องประชุมบริษัทโตโยต้า จ.อำนาจเจริญ',chair:'นพ.สุเมธ แสงอ่อน',dress:'',unit:'กลุ่มงานประกันสุขภาพ',status:'pending'},
+  {id:2,date:'2569-03-23',time:'13.00 น.เป็นต้นไป',detail:'ประชุมคณะกรรมการประเมินบุคคลเพื่อเลื่อนขึ้นแต่งตั้งดำรงตำแหน่งประเภทวิชาการ',place:'ห้องประชุมแสงจันทร์ สสจ.อจ.',chair:'',dress:'',unit:'กลุ่มงานบริหารทรัพยากรบุคคล',status:'pending'},
+  {id:3,date:'2569-03-24',time:'ทั้งวัน',detail:'สัมมนาแลกเปลี่ยนเรียนรู้การพัฒนาระบบบริการรับส่งต่อผู้ป่วย ปีงบประมาณ พ.ศ. 2568',place:'โรงแรมเชนทารา ไลฟ์ ศูนย์ราชการเขตหลักสี่ กรุงเทพมหานคร',chair:'',dress:'',unit:'กลุ่มงานพัฒนาคุณภาพและรูปแบบบริการ',status:'pending'},
+  {id:4,date:'2569-03-25',time:'ทั้งวัน',detail:'สัมมนาแลกเปลี่ยนเรียนรู้การพัฒนาระบบบริการรับส่งต่อผู้ป่วย (ต่อเนื่อง)',place:'โรงแรมเชนทารา ไลฟ์ ศูนย์ราชการ กรุงเทพมหานคร',chair:'',dress:'',unit:'กลุ่มงานพัฒนาคุณภาพและรูปแบบบริการ',status:'pending'},
+  {id:5,date:'2569-03-26',time:'13.30–16.30 น.',detail:'ประชุมติดตามการขับเคลื่อนการพัฒนาประสิทธิภาพระบบบริการสุขภาพ One Region One Province One Hospital',place:'ระบบออนไลน์',chair:'',dress:'',unit:'กลุ่มงานพัฒนาคุณภาพและรูปแบบบริการ',status:'pending'},
+  {id:6,date:'2569-03-26',time:'15.00 น.เป็นต้นไป',detail:'ประธานการประชุมคัดเลือกคนดีศรีปฐมภูมิ ระดับจังหวัด',place:'ห้องประชุมแสงจันทร์ สสจ.อจ.',chair:'นพ.สุเมธ แสงอ่อน',dress:'',unit:'กลุ่มงานบริการปฐมภูมิและสุขภาพภาคประชาชน',status:'pending'},
+  {id:7,date:'2569-03-27',time:'08.30–16.30 น.',detail:'ปฏิบัติราชการที่สำนักงานสาธารณสุขจังหวัดอำนาจเจริญ และโรงพยาบาลลืออำนาจ',place:'สำนักงานสาธารณสุขจังหวัดอำนาจเจริญ และ รพ.ลืออำนาจ',chair:'',dress:'',unit:'กลุ่มงานยุทธศาสตร์และสารสนเทศสุขภาพ',status:'pending'},
+  {id:8,date:'2569-03-30',time:'09.00 น.เป็นต้นไป',detail:'ประธานการตรวจราชการและนิเทศงานกรณีปกติ เขตสุขภาพที่ 10 รอบ 1/2569',place:'สำนักงานสาธารณสุขจังหวัดยโสธร',chair:'นพ.สุเมธ แสงอ่อน',dress:'',unit:'กลุ่มงานยุทธศาสตร์และสารสนเทศสุขภาพ',status:'pending'},
+  {id:9,date:'2569-03-30',time:'09.30 น.เป็นต้นไป',detail:'ตรวจราชการและนิเทศงานกรณีปกติ เขตสุขภาพที่ 10 รอบ 1/2569',place:'โรงพยาบาลไทยเจริญ จังหวัดยโสธร',chair:'',dress:'',unit:'กลุ่มงานยุทธศาสตร์และสารสนเทศสุขภาพ',status:'pending'},
+  {id:10,date:'2569-03-30',time:'15.00 น.เป็นต้นไป',detail:'ประชุมพิจารณาค่าตอบแทนเพิ่มเติมพิเศษสำหรับแพทย์ ทันตแพทย์ และเภสัชกร',place:'ห้องประชุมคณาพันธ์ สสจ.อจ.',chair:'',dress:'',unit:'กลุ่มงานบริหารทั่วไป',status:'pending'},
+  {id:11,date:'2569-03-30',time:'15.00 น.เป็นต้นไป',detail:'ประชุมคณะกรรมการบริหารทรัพยากรบุคคล สสจ.อจ. พิจารณาการย้ายข้าราชการ',place:'ห้องประชุมคณาพันธ์ สสจ.อจ.',chair:'',dress:'',unit:'กลุ่มงานบริหารทรัพยากรบุคคล',status:'pending'},
+  {id:12,date:'2569-03-31',time:'11.00 น.เป็นต้นไป',detail:'ประชุมทีมตรวจราชการและนิเทศงานกรณีปกติ เขตสุขภาพที่ 10 รอบ 1/2569 ประเด็นระบบสุขภาพปฐมภูมิ',place:'สำนักงานสาธารณสุขจังหวัดยโสธร',chair:'',dress:'',unit:'กลุ่มงานบริการปฐมภูมิและสุขภาพภาคประชาชน',status:'pending'},
+  {id:13,date:'2569-04-01',time:'08.30 น.เป็นต้นไป',detail:'นำเสนอสรุปตรวจราชการและนิเทศงานกรณีปกติ เขตสุขภาพที่ 10 รอบ 1/2569',place:'โรงพยาบาลยโสธร จังหวัดยโสธร',chair:'',dress:'',unit:'กลุ่มงานยุทธศาสตร์และสารสนเทศสุขภาพ',status:'pending'},
+  {id:14,date:'2569-04-03',time:'13.00–15.00 น.',detail:'ประชุมกับหน่วยงานภาคยุทธศาสตร์เชิงนโยบายและแนวกิวชาการ ณ องค์การบริหารส่วนจังหวัดอำนาจเจริญ',place:'องค์การบริหารส่วนจังหวัดอำนาจเจริญ',chair:'',dress:'',unit:'กลุ่มงานพัฒนาคุณภาพและรูปแบบบริการ',status:'pending'},
+  {id:15,date:'2569-04-04',time:'09.00–12.00 น.',detail:'ร่วมมหกรรมงาน "อีสานพลัส : บูรณาการชุมชนเข้ม เศรษฐกิจใหม่ คนอีสานอยู่ดีกินดีสุขภาพดี"',place:'มหาวิทยาลัยขอนแก่น จังหวัดขอนแก่น',chair:'',dress:'',unit:'กลุ่มงานควบคุมโรค',status:'pending'},
+  {id:16,date:'2569-04-05',time:'09.00–12.00 น.',detail:'ร่วมมหกรรมงาน "อีสานพลัส" (วันที่ 2)',place:'มหาวิทยาลัยขอนแก่น จังหวัดขอนแก่น',chair:'',dress:'',unit:'กลุ่มงานควบคุมโรค',status:'pending'},
+  {id:17,date:'2569-04-11',time:'09.30 น.เป็นต้นไป',detail:'ประชุมสรุปผลการปฏิบัติงานประจำวันช่วงเทศกาลสงกรานต์ พ.ศ. 2569',place:'ห้องประชุม POC ชั้น 4 ศาลากลางจังหวัดอำนาจเจริญ',chair:'นายเสนีย์ สัมเขียวหวาน ผู้ว่าราชการจังหวัดอำนาจเจริญ',dress:'เสื้อกั๊ก EMS',unit:'กลุ่มงานโรคไม่ติดต่อ (กง.NCD)',status:'pending'},
+  {id:18,date:'2569-04-12',time:'09.30 น.เป็นต้นไป',detail:'ประชุมสรุปผลการปฏิบัติงานประจำวันช่วงเทศกาลสงกรานต์ พ.ศ. 2569',place:'ห้องประชุม POC ชั้น 4 ศาลากลางจังหวัดอำนาจเจริญ',chair:'นายเทพรัตน์ ดันตะยานนท์ รองผู้ว่าราชการจังหวัดอำนาจเจริญ',dress:'เสื้อกั๊ก EMS',unit:'กลุ่มงานโรคไม่ติดต่อ (กง.NCD)',status:'pending'},
+  {id:19,date:'2569-04-13',time:'09.30 น.เป็นต้นไป',detail:'ประชุมสรุปผลการปฏิบัติงานประจำวันช่วงเทศกาลสงกรานต์ พ.ศ. 2569',place:'ห้องประชุม POC ชั้น 4 ศาลากลางจังหวัดอำนาจเจริญ',chair:'นายไพฑูรย์ พรหมสอน รองผู้ว่าราชการจังหวัดอำนาจเจริญ',dress:'เสื้อกั๊ก EMS',unit:'กลุ่มงานโรคไม่ติดต่อ (กง.NCD)',status:'pending'},
+  {id:20,date:'2569-04-14',time:'09.30 น.เป็นต้นไป',detail:'ประชุมสรุปผลการปฏิบัติงานประจำวันช่วงเทศกาลสงกรานต์ พ.ศ. 2569',place:'ห้องประชุม POC ชั้น 4 ศาลากลางจังหวัดอำนาจเจริญ',chair:'นายพรชัย วงศ์งาม ปลัดจังหวัดอำนาจเจริญ',dress:'เสื้อกั๊ก EMS',unit:'กลุ่มงานโรคไม่ติดต่อ (กง.NCD)',status:'pending'},
+  {id:21,date:'2569-04-15',time:'09.30 น.เป็นต้นไป',detail:'ประชุมสรุปผลการปฏิบัติงานประจำวันช่วงเทศกาลสงกรานต์ พ.ศ. 2569',place:'ห้องประชุม POC ชั้น 4 ศาลากลางจังหวัดอำนาจเจริญ',chair:'ผู้บังคับการตำรวจภูธรจังหวัดอำนาจเจริญ',dress:'เสื้อกั๊ก EMS',unit:'กลุ่มงานโรคไม่ติดต่อ (กง.NCD)',status:'pending'},
+  {id:22,date:'2569-04-16',time:'09.30 น.เป็นต้นไป',detail:'ประชุมสรุปผลการปฏิบัติงานประจำวันช่วงเทศกาลสงกรานต์ พ.ศ. 2569',place:'ห้องประชุม POC ชั้น 4 ศาลากลางจังหวัดอำนาจเจริญ',chair:'นายธิรพุทธิ เฉลิมเกียรติสกุล นายแพทย์สาธารณสุขจังหวัดอำนาจเจริญ',dress:'เสื้อกั๊ก EMS',unit:'กลุ่มงานโรคไม่ติดต่อ (กง.NCD)',status:'pending'},
+  {id:23,date:'2569-04-17',time:'09.30 น.เป็นต้นไป',detail:'ประชุมสรุปผลการปฏิบัติงานประจำวันช่วงเทศกาลสงกรานต์ พ.ศ. 2569',place:'ห้องประชุม POC ชั้น 4 ศาลากลางจังหวัดอำนาจเจริญ',chair:'นายเสนีย์ สัมเขียวหวาน ผู้ว่าราชการจังหวัดอำนาจเจริญ',dress:'เสื้อกั๊ก EMS',unit:'กลุ่มงานโรคไม่ติดต่อ (กง.NCD)',status:'pending'},
+  {id:24,date:'2569-04-17',time:'13.30 น.เป็นต้นไป',detail:'ประชุมคณะกรรมการประเมินบุคคลเพื่อเลื่อนขึ้นแต่งตั้งดำรงตำแหน่ง ระดับชำนาญการ และระดับชำนาญการพิเศษ ในสำนักงานปลัดกระทรวงสาธารณสุข',place:'ห้องประชุมแสงจันทร์ สสจ.อจ.',chair:'',dress:'',unit:'กลุ่มงานบริหารทรัพยากรบุคคล',status:'pending'},
+];
+
+function rStats(){const done=DATA.filter(d=>effStatus(d)==='done').length;const delay=DATA.filter(d=>effStatus(d)==='delay').length;const cancel=DATA.filter(d=>effStatus(d)==='cancel').length;document.getElementById('stats').innerHTML=`<div class="sc sc-sky"><div class="l">วาระทั้งหมด</div><div class="v">${DATA.length}</div><div class="s">รายการ</div></div><div class="sc sc-done"><div class="l">เสร็จแล้ว</div><div class="v">${done}</div><div class="s">วาระ</div></div><div class="sc sc-delay"><div class="l">เลื่อน</div><div class="v">${delay}</div><div class="s">วาระ</div></div><div class="sc sc-cancel"><div class="l">ยกเลิก</div><div class="v">${cancel}</div><div class="s">วาระ</div></div>`;}
+function rEvs(){const q=(document.getElementById('aeq').value||'').toLowerCase();const srt=document.getElementById('aesrt').value;const unitF=document.getElementById('ae-unit').value;let rows=SEL?DATA.filter(d=>d.date===SEL):[...DATA];if(unitF)rows=rows.filter(d=>d.unit===unitF);if(SF==='done')rows=rows.filter(d=>effStatus(d)==='done');else if(SF==='delay')rows=rows.filter(d=>effStatus(d)==='delay');else if(SF==='cancel')rows=rows.filter(d=>effStatus(d)==='cancel');if(q)rows=rows.filter(e=>[e.detail,e.place,e.chair,e.unit].join(' ').toLowerCase().includes(q));const so={pending:0,delay:1,cancel:2,done:3};if(srt==='status')rows.sort((a,b)=>so[effStatus(a)]-so[effStatus(b)]||a.date.localeCompare(b.date));else rows.sort((a,b)=>a.unit.localeCompare(b.unit)||a.date.localeCompare(b.date));const isTd=SEL===TOD;document.getElementById('ev-title').textContent=SEL?thD(SEL):'วาระทั้งหมด';document.getElementById('sel-tag-wrap').innerHTML=SEL?`<span class="sel-tag${isTd?' tt':''}">${isTd?'วันนี้':''} ${rows.length} วาระ</span>`:'';document.getElementById('btn-all').classList.toggle('active-all',!SEL);document.getElementById('aesum').innerHTML=`<span>แสดง</span><span class="aecnt">${rows.length}</span><span>วาระ</span>`;if(!rows.length){document.getElementById('aebody').innerHTML=emp(SEL?'ไม่มีวาระในวันที่เลือก':'ไม่พบวาระที่ตรงกัน');return;}const bd={};rows.forEach(e=>{(bd[e.date]=bd[e.date]||[]).push(e);});document.getElementById('aebody').innerHTML=Object.keys(bd).sort().map((d,gi)=>{const evs=bd[d],isTd2=d===TOD;return`<div class="tb"><div class="th"><div class="tdot2" style="background:${isTd2?'#FF6B35':'#0EA5E9'}"></div><span class="tl2"${isTd2?' style="color:#FF6B35;font-weight:700"':''}>${thD(d)}</span><div class="tline"></div><span class="tcnt">${evs.length} วาระ</span></div><div class="tcards">${evs.map((e,i)=>card(e,i,false)).join('')}</div></div>`;}).join('');}
+function sw(t,el){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.sec').forEach(x=>x.classList.remove('active'));el.classList.add('active');document.getElementById('sec-'+t).classList.add('active');if(t==='week')rWeek();if(t==='calall'){rebuildUnitSel();rCal();rEvs();}if(t==='add'){bSel('fUnit','กลุ่มงานโรคไม่ติดต่อ (กง.NCD)');document.getElementById('fId').value='';document.getElementById('fttl').textContent='เพิ่มวาระงานใหม่';['fDate','fTime','fDetail','fPlace','fChair','fDress'].forEach(id=>document.getElementById(id).value='');document.getElementById('f-uw').classList.remove('show');}}
+function cf(){sw('calall',document.querySelectorAll('.tab')[1]);}
+function saveI(){const d={date:document.getElementById('fDate').value,time:document.getElementById('fTime').value,detail:document.getElementById('fDetail').value,place:document.getElementById('fPlace').value,chair:document.getElementById('fChair').value,dress:document.getElementById('fDress').value,unit:document.getElementById('fUnit').value,status:'pending'};if(!d.date||!d.detail){alert('กรุณากรอกวันที่และรายละเอียดวาระ');return;}const eid=document.getElementById('fId').value;if(eid){const i=DATA.findIndex(r=>r.id==eid);if(i>=0)DATA[i]={...DATA[i],...d,status:DATA[i].status};}else DATA.push({id:NID++,...d});SEL=d.date;const[y,m]=d.date.split('-');CY=+y;CM=+m;document.getElementById('btn-all').classList.remove('active-all');sw('calall',document.querySelectorAll('.tab')[1]);render();}
+function oe(id){const r=DATA.find(d=>d.id===id);if(!r)return;bSel('efUnit',r.unit);document.getElementById('efDate').value=r.date;document.getElementById('efTime').value=r.time;document.getElementById('efDetail').value=r.detail;document.getElementById('efPlace').value=r.place||'';document.getElementById('efChair').value=r.chair||'';document.getElementById('efDress').value=r.dress||'';document.getElementById('efId').value=id;document.getElementById('ef-uw').classList.remove('show');document.getElementById('medit').classList.add('open');}
+function ce(){document.getElementById('medit').classList.remove('open');}
+function saveE(){const id=+document.getElementById('efId').value;const d={date:document.getElementById('efDate').value,time:document.getElementById('efTime').value,detail:document.getElementById('efDetail').value,place:document.getElementById('efPlace').value,chair:document.getElementById('efChair').value,dress:document.getElementById('efDress').value,unit:document.getElementById('efUnit').value};if(!d.date||!d.detail){alert('กรุณากรอกข้อมูล');return;}const i=DATA.findIndex(r=>r.id===id);if(i>=0)DATA[i]={...DATA[i],...d};SEL=d.date;const[y,m]=d.date.split('-');CY=+y;CM=+m;ce();render();}
+function di(id){if(confirm('ยืนยันการลบวาระนี้?')){DATA=DATA.filter(d=>d.id!==id);render();if(wkSel)rWkPanel(wkSel);}}
+function emp(t){return`<div class="emp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><p>${t}</p></div>`}
+function render(){rStats();rCal();rEvs();rebuildUnitSel();if(document.getElementById('sec-week').classList.contains('active'))rWeek();}
+render();
+</script>
+</body>
+</html>
